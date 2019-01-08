@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2019/1/3 20:47
-# @Author  : Houwei
+# @Author  : hw
 # @Site    :
 # @File    : towerInfo.py
 # @Software: PyCharm
@@ -128,7 +128,7 @@ def get_src_floors(src_path, out_path):
 
 
 # debuger
-# 用chrome来模拟运行游戏 因为没点击 所以要模拟开始
+# 用chrome来模拟运行游戏 要模拟开始后才有数据
 # 这个可以用来计算实时伤害
 from selenium import webdriver
 

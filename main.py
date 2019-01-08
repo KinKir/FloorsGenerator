@@ -1,10 +1,11 @@
 import os, sys
 
 # print("输入原塔路径")
-src_path = '/chome/houwei/pytcl/gan/dcgan/data/projects'
+src_path = '/data/projects'
 
 temp_dirs = ["data/traindata/", "data/srcdata/", "output/floors_img/", "output/floors/"]
-os.chdir("/chome/houwei/pytcl/gan/dcgan")
+# os.chdir("/chome/houwei/pytcl/gan/dcgan")
+
 for path in temp_dirs:
     os.system("rm -rf %s*" % path)
     os.makedirs(path, exist_ok=True)
