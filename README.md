@@ -1,4 +1,4 @@
-#基于DCGAN的魔塔布局生成
+# 基于DCGAN的魔塔布局生成
 
 ## GAN运行方法
 1. 把样板塔project目录下的/floors 以及 data.js 复制到 data目录中
