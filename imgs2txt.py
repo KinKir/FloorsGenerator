@@ -22,9 +22,9 @@ def block_mesh_proc(arr):
     for i in range(len(arr)):
         for j in range(len(arr[i])):
             if arr[i][j] > 125:
-                arr[i][j] = 1
-            else:
                 arr[i][j] = 0
+            else:
+                arr[i][j] = 1
     return arr
 
 
@@ -40,7 +40,7 @@ def write2txt(img, name, proc):
         f.write(str(dt.tolist()))
 
 
-def batch2map(pics, mapsize=[13, 13], n_row=5, out_pt=None):
+def batch2map(pics, mapsize=[13, 13], n_row=1, out_pt=None):
     if out_pt is not None:
         global out_path
         out_path = out_pt

@@ -1,10 +1,10 @@
 import os, sys
 
 # print("输入原塔路径")
-src_path = '/data/projects'
-
+src_path = os.getcwd() + '/data/projects/51'
+print(src_path)
 temp_dirs = ["data/traindata/", "data/srcdata/", "output/floors_img/", "output/floors/"]
-# os.chdir("/chome/houwei/pytcl/gan/dcgan")
+os.chdir("/chome/houwei/pytcl/gan/dcgan")
 
 for path in temp_dirs:
     os.system("rm -rf %s*" % path)
@@ -30,7 +30,7 @@ from imgs2txt import batch2map
 
 pic_path, _, pic_lst = os.walk("output/floors_img/").__next__()
 pic_lst = [os.path.join(pic_path, p) for p in pic_lst]
-batch2map(pic_lst, mapsize=[13, 13], n_row=5, out_pt="output/floors/")
+batch2map(pic_lst, mapsize=[13, 13], n_row=2, out_pt="output/floors/")
 
 # --------- 3 将数据写入新塔 ---------
 from towerInfo import JSdata

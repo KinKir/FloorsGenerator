@@ -107,8 +107,8 @@ def get_src_floors(src_path, out_path):
         m = JSdata(path)
         exclude = "sample"
         for l in lst:
-            nonlocal ct
             if exclude not in l and l[-3:] == '.js':
+                nonlocal ct
                 ct += 1
                 if not m.read_from_js(l):
                     print("error in " + l)
@@ -127,7 +127,7 @@ def get_src_floors(src_path, out_path):
     all_log.close()
 
 
-# debuger
+# debuger % windows
 # 用chrome来模拟运行游戏 要模拟开始后才有数据
 # 这个可以用来计算实时伤害
 from selenium import webdriver
@@ -144,6 +144,140 @@ class Debuger:
         self.driver.execute_script("core.events.startGame('');")
 
 
+def add_event_to_floors(floorIds):
+    map = JSdata("data/floors")
+    for i in floorIds:
+        fname = 'MT%d.js' % i
+        try:
+            map.read_from_js(fname)
+        except:
+            continue
+        # up : 87 down : 88
+        import numpy as np
+        arr = np.array(map.data["map"])
+
+        def get_dict(numid, content_func):
+            ys, xs = np.where(arr == numid)  # !array的坐标xy是反的
+            res = {}
+            for x, y in zip(xs, ys):
+                key = "%d,%d" % (x, y)
+                res[key] = content_func(numid, x, y)
+            return res
+
+        def make_floor_change(numid, x, y):
+            res = {}
+            if numid == 88:
+                res["floorId"] = "before"
+            else:
+                res["floorId"] = "next"
+            res["loc"] = [int(x), int(y)]
+            res["time"] = 500
+            return res
+
+        # 添加上下楼
+        d_up = get_dict(87, make_floor_change)
+        d = dict(d_up, **get_dict(88, make_floor_change))
+        map.data["changeFloor"] = d
+
+        map.save_to_js()
+
+
+def parseJSvalue(s):
+    s = cmt_pat.sub("", s)
+    s = s.replace('\n', '')
+    s = empty_pat.sub("}", s)
+    s = fh_pat.sub("", s)
+    true = True
+    false = False
+    null = None
+    return eval(s)
+
+
+class Cgui:
+    def __init__(self):
+        self.flst = []
+        self.data_dict = {}
+
+    def read_files(self, folder="data/floors"):
+        _, _, files = os.walk(folder).__next__()
+        for f in files:
+            try:
+                map = JSdata(folder)
+                map.read_from_js(f)
+
+                self.data_dict[f] = map
+                self.flst.append(f)
+            except:
+                self.data_dict[f] = None
+
+    def show_flst(self):
+        return self.flst
+
+    def show_one_file(self, f):
+        return self.data_dict[f].data
+
+    def get_attr(self, f, attr):
+        return self.data_dict[f].data[attr]
+
+    def modify_attr(self, f, attr, content, all=False):
+        data = ""
+        if len(content) <= 0:
+            print("清空数据")
+        else:
+            try:
+                data = json.loads(content)  # parseJSvalue(content)
+            except:
+                return "解析出错"
+
+        if all:
+            for k in self.data_dict:
+                mt = self.data_dict[k]
+                mt.data[attr] = data
+            return "全部%s修改成功"%attr
+        else:
+            self.data_dict[f].data[attr] = data
+            return "修改"+f+" "+attr+"成功"
+
+    def save_all(self):
+        errorlist = []
+        for k in self.data_dict:
+            try:
+                self.data_dict[k].save_to_js()
+            except:
+                errorlist.append(k)
+        if len(errorlist) == 0:
+            return "写入成功"
+        else:
+            return "写入出错：" + '、'.join(errorlist)
+
+
+
+
+    # 适合深层结构修改：
+    def modify(self, f, arglst, dst):
+        if f not in self.data_dict or self.data_dict[f] is None:
+            return "文件名出错"
+        root = self.data_dict
+        for arg in arglst[:-1]:
+            if arg not in root:
+                return str(arg) + "不在属性内"
+        arg = arglst[-1]
+        if arg not in root:
+            return str(arg) + "不在属性内"
+        try:
+            data = json.loads(dst)
+            root[arg] = data
+        except:
+            return "json解析出错"
+
+        return None
+
+
+if __name__ == '__main__':
+    ids = [i for i in range(10, 20)]
+    add_event_to_floors(ids)
+
+"""
 if __name__ == '__main__':
     map = JSdata("data/floors")
     data = JSdata("data")
@@ -157,3 +291,4 @@ if __name__ == '__main__':
             val = eval(f.read().strip())
         data.data["main"]["floorIds"].append(map.write_template(add_floor=True, data=val, ignore=True))
     data.save_to_js()
+"""
