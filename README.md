@@ -6,9 +6,9 @@ HTML5魔塔样板地址：https://github.com/ckcz123/mota-js
 
 ### 运行方法
 1. 把工程目录下的/floors 复制到 data目录中
-2. 运行： python usrgui.py
+2. 直接运行 usrgui.exe 或者 运行： python usrgui.py
 
-### 环境依赖(后续会打包成exe就能脱离依赖了 先鸽着。。)
+### 环境依赖(运行exe需要64位操作系统)
 python 3.5
 
 ### 使用方法
