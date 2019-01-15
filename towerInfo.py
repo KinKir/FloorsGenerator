@@ -10,9 +10,7 @@ function:
 """
 
 import json
-import time
 import re
-
 import os
 
 cmt_pat = re.compile("//.*")  # 去掉注释用的
@@ -130,20 +128,20 @@ def get_src_floors(src_path, out_path):
 # debuger % windows
 # 用chrome来模拟运行游戏 要模拟开始后才有数据
 # 这个可以用来计算实时伤害
-from selenium import webdriver
+# from selenium import webdriver
 
 
-class Debuger:
-    def __init__(self):
-        opt = webdriver.ChromeOptions()
-        opt.headless = True
-        self.driver = webdriver.Chrome(options=opt)
+# class Debuger:
+#     def __init__(self):
+#         opt = webdriver.ChromeOptions()
+#         opt.headless = True
+#         self.driver = webdriver.Chrome(options=opt)
+#
+#     def connect(self, url="http://127.0.0.1:1055/index.html"):
+#         self.driver.get(url)
+#         self.driver.execute_script("core.events.startGame('');")
 
-    def connect(self, url="http://127.0.0.1:1055/index.html"):
-        self.driver.get(url)
-        self.driver.execute_script("core.events.startGame('');")
-
-
+"""
 def add_event_to_floors(floorIds):
     map = JSdata("data/floors")
     for i in floorIds:
@@ -180,17 +178,18 @@ def add_event_to_floors(floorIds):
         map.data["changeFloor"] = d
 
         map.save_to_js()
+"""
 
 
-def parseJSvalue(s):
-    s = cmt_pat.sub("", s)
-    s = s.replace('\n', '')
-    s = empty_pat.sub("}", s)
-    s = fh_pat.sub("", s)
-    true = True
-    false = False
-    null = None
-    return eval(s)
+# def parseJSvalue(s):
+#     s = cmt_pat.sub("", s)
+#     s = s.replace('\n', '')
+#     s = empty_pat.sub("}", s)
+#     s = fh_pat.sub("", s)
+#     true = True
+#     false = False
+#     null = None
+#     return eval(s)
 
 
 class Cgui:
@@ -251,8 +250,6 @@ class Cgui:
             return "写入出错：" + '、'.join(errorlist)
 
 
-
-
     # 适合深层结构修改：
     def modify(self, f, arglst, dst):
         if f not in self.data_dict or self.data_dict[f] is None:
@@ -273,9 +270,9 @@ class Cgui:
         return None
 
 
-if __name__ == '__main__':
-    ids = [i for i in range(10, 20)]
-    add_event_to_floors(ids)
+#if __name__ == '__main__':
+#    ids = [i for i in range(10, 20)]
+#    add_event_to_floors(ids)
 
 """
 if __name__ == '__main__':
