@@ -1,5 +1,7 @@
 # HTML5魔塔编辑器工具集
 
+HTML5魔塔样板地址：https://github.com/ckcz123/mota-js
+
 ## 1 批量属性修改
 
 ### 运行方法
