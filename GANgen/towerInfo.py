@@ -12,7 +12,6 @@ function:
 import json
 import re
 import os
-
 cmt_pat = re.compile("//.*")  # 去掉注释用的
 empty_pat = re.compile(",[\s]*}")
 # blank_pat = re.compile("[\s]")
